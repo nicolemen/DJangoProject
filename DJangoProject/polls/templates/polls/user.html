@@ -1,20 +1,40 @@
-<!-- list of users -->
-<h1>Users</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-  div {
-    border: 1px solid black;
-    padding: 30px;
-    margin: 5px;
-  }
-</style>
+<head>
+  <meta charset="utf-8">
+  <title>User Page</title>
 
-{% if user_list %}
+  <!-- more css to beautify and organize site-->
+  <style>
+    body {
+      text-align: center;
+      background-color: lightblue;
+    }
+    div.users {
+      background-color: pink;
+      border: 1px solid black;
+      padding: 10px;
+      margin: 5px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1>Users</h1>
+  <a href="{% url 'index' %}">Go Back To Main Page</a>
+
+  <!-- list of users that have posted on site -->
+  {% if user_list %}
     {% for user in user_list %}
-      <div>
-        <p>User: {{ user.username }}</p>
+      <div class="users">
+          <p>User: {{ user.username }}</p>
       </div>
     {% endfor %}
-{% else %}
-  <p>No Users Found</p>
-{% endif %}
+  {% else %}
+    <p>No Users Found</p>
+  {% endif %}
+</body>
+
+</html>

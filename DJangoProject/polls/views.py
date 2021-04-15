@@ -1,14 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-
+from django.urls import reverse
 from .models import Posts, Users
-from django.utils import timezone
 from django.contrib.auth.models import User
 
-# Create your views here.
+# each view goes to one template
 
+# main view is the main "Reddit" page with all of the posts
 def main_view(request):
+    # views find models and retrieve the data, putting data in context and then sending to respective template
     template = loader.get_template('polls/main.html')
     latest_post_list = Posts.objects.order_by('date')
     context = {
@@ -17,6 +18,7 @@ def main_view(request):
     print(latest_post_list)
     return HttpResponse(template.render(context, request))
 
+# user view is the list of users that have created posts
 def user_view(request):
     template = loader.get_template('polls/user.html')
     user_list = Users.objects.order_by('username')
@@ -24,3 +26,17 @@ def user_view(request):
     'user_list' : user_list,
     }
     return HttpResponse(template.render(context, request))
+
+# upvote and downvote functions that increment by one
+
+def upvote(request, post_id):
+    post = Posts.objects.get(pk=post_id)
+    post.upvotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('index'))
+
+def downvote(request, post_id):
+    post = Posts.objects.get(pk=post_id)
+    post.downvotes += 1
+    post.save()
+    return HttpResponseRedirect(reverse('index'))

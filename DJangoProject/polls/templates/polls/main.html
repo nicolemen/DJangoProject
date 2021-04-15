@@ -1,25 +1,56 @@
-<!-- main page on Reddit -->
-<h1>Main Page</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<style>
-  div.text {
-    border: 1px solid black;
-    padding: 30px;
-    margin: 5px;
-  }
-</style>
+<head>
+  <meta charset="utf-8">
+  <title>Reddit Page</title>
 
-{% if post_list %}
+  <!-- some css to make the site look more like "Reddit" -->
+  <style>
+    body{
+      text-align: center;
+      background-color: lightblue;
+    }
+    div.text {
+      background-color: pink;
+      border: 1px solid black;
+      padding: 30px;
+      margin: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- main page on Reddit -->
+  <h1>Main Reddit Page</h1>
+  <a href="{% url 'user' %}">See All Users</a>
+
+  <!-- organizing information regarding post, as Reddit does, including emojis for the upvotes/downvotes/comments -->
+  {% if post_list %}
     {% for post in post_list %}
       <div class="text">
         <p>User: {{ post.user }}</p>
         <p>Content: {{ post.content }}</p>
         <p>Date: {{ post.date }}</p>
-        <p>⇧ {{ post.upvotes }}</p>
-        <p>⇩ {{ post.downvotes }}</p>
-        <p>Comments: {{ post.comments }}</p>
+
+        <!-- upvotes and downvotes that are interactive-->
+        <form action="{% url 'upvote' post.id %}" method="post" style="display:inline">
+          {% csrf_token %}
+          <input type="submit" value="Upvote" />
+          <label for="upvote">{{ post.upvotes }}</label>
+        </form>
+        <form action="{% url 'downvote' post.id %}" method="post" style="display:inline">
+          {% csrf_token %}
+          <input type="submit" value="Downvote" />
+          <label for="downvote">{{ post.downvotes }}</label>
+        </form>
+        
+        <p>🗨 {{ post.comments }}</p>
       </div>
     {% endfor %}
-{% else %}
-  <p>No Posts Found</p>
-{% endif %}
+  {% else %}
+    <p>No Posts Found</p>
+  {% endif %}
+</body>
+
+</html>
