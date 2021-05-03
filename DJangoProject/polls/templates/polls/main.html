@@ -24,6 +24,7 @@
   <!-- main page on Reddit -->
   <h1>Main Reddit Page</h1>
   <a href="{% url 'user' %}">See All Users</a>
+  <a href="{% url 'post' %}">Make a Post</a>
 
   <!-- organizing information regarding post, as Reddit does, including emojis for the upvotes/downvotes/comments -->
   {% if post_list %}
@@ -44,7 +45,7 @@
           <input type="submit" value="Downvote" />
           <label for="downvote">{{ post.downvotes }}</label>
         </form>
-        
+
         <p>🗨 {{ post.comments }}</p>
       </div>
     {% endfor %}

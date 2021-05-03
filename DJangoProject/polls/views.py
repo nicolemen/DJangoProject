@@ -27,6 +27,11 @@ def user_view(request):
     }
     return HttpResponse(template.render(context, request))
 
+# make post view is where Reddit users can add to chain of posts
+def make_post_view(request):
+    template = loader.get_template('polls/post.html')
+    
+
 # upvote and downvote functions that increment by one
 
 def upvote(request, post_id):
