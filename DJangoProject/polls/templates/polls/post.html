@@ -18,6 +18,13 @@
   <a href="{% url 'index' %}">Go Back To Main Page</a>
   <a href="{% url 'user' %}">See All Users</a>
 
+  <textarea id="write_post" name="write_post" rows="5" cols="50"></textarea>
+
+  <form action="{% url 'submit' post.id %}" method="post" style="display:inline">
+    {% csrf_token %}
+    <input type="submit" value="Submit" />
+    <label for="submit">{{ post.submit }}</label>
+  </form>
 
 </body>
 
