@@ -4,6 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from .models import Posts, Users
 from django.contrib.auth.models import User
+from time import localtime
 
 # each view goes to one template
 
@@ -30,14 +31,15 @@ def user_view(request):
 # make post view is where Reddit users can add to chain of posts
 def make_post_view(request):
     template = loader.get_template('polls/post.html')
-    return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render({}, request))
 
-def submit(request, post_id):
-    if request.Posts:
+def submit(request):
+    if request.method == "POST":
+        thisUser = Users.objects.get(username = request.POST['userPosting'])
         newPost = Posts(
-            content = request.Posts['newContent'],
-            user = request.Posts['userPosting'],
-            date = timezone.now(),
+            content = request.POST['newContent'],
+            user = thisUser,
+            date = localtime(),
         )
     newPost.save()
     return HttpResponseRedirect(reverse('index'))
