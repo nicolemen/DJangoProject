@@ -4,7 +4,7 @@ from django.template import loader
 from django.urls import reverse
 from .models import Posts, Users
 from django.contrib.auth.models import User
-from time import localtime
+from django.utils import timezone
 
 # each view goes to one template
 
@@ -12,7 +12,7 @@ from time import localtime
 def main_view(request):
     # views find models and retrieve the data, putting data in context and then sending to respective template
     template = loader.get_template('polls/main.html')
-    latest_post_list = Posts.objects.order_by('date')
+    latest_post_list = Posts.objects.order_by('-date')
     context = {
     'post_list' : latest_post_list,
     }
@@ -39,7 +39,7 @@ def submit(request):
         newPost = Posts(
             content = request.POST['newContent'],
             user = thisUser,
-            date = localtime(),
+            date = timezone.now(),
         )
     newPost.save()
     return HttpResponseRedirect(reverse('index'))
