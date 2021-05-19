@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Posts, Users
+from .models import Posts
 from django.contrib.auth.models import User
 from django.utils import timezone
 
@@ -22,7 +22,7 @@ def main_view(request):
 # user view is the list of users that have created posts
 def user_view(request):
     template = loader.get_template('polls/user.html')
-    user_list = Users.objects.order_by('username')
+    user_list = User.objects.order_by('username')
     context = {
     'user_list' : user_list,
     }
@@ -35,7 +35,7 @@ def make_post_view(request):
 
 def submit(request):
     if request.method == "POST":
-        thisUser = Users.objects.get(username = request.POST['userPosting'])
+        thisUser = User.objects.get(username = request.POST['userPosting'])
         newPost = Posts(
             content = request.POST['newContent'],
             user = thisUser,
