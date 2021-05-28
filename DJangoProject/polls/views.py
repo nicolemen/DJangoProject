@@ -4,12 +4,26 @@ from django.template import loader
 from django.urls import reverse
 from .models import Posts
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 
 # each view goes to one template
 
 # main view is the main "Reddit" page with all of the posts
 def main_view(request):
+    if request.POST:
+            if 'inputUsername' in request.POST.keys():
+                user = authenticate(username=request.POST['inputUsername'],password=request.POST['inputPassword'])
+                if user is not None:
+                    login(request,user)
+                else:
+                    inputPassword
+            elif 'logout'in request.POST.keys():
+                logout(request)
+    if request.user.is_authenticated:
+        loggedIn = True
+    else:
+        loggedIn = False
     # views find models and retrieve the data, putting data in context and then sending to respective template
     template = loader.get_template('polls/main.html')
     latest_post_list = Posts.objects.order_by('-date')

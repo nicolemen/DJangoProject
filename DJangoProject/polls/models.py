@@ -12,3 +12,5 @@ class Posts(models.Model):
 
     def __str__(self):
         return self.content
+
+# class Comments(models.Model):
